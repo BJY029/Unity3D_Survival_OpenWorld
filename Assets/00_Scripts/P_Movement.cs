@@ -54,7 +54,7 @@ public class P_Movement : MonoBehaviour
 		cameraForward.Normalize();
 		cameraRight.Normalize();
 
-		//카메라의 이동 방향 구하기
+		//카메라가 보고 있는 방향 기준으로, 입력에 맞는 방향으로 움직이는 벡터를 구한다.
 		Vector3 moveDirection = cameraRight * horizontal + cameraForward * vertical;
 
 		//카메라 방향에 따라 캐릭터가 움직이게 된다.
