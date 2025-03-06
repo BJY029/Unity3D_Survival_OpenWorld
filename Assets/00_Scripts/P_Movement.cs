@@ -46,6 +46,9 @@ public class P_Movement : MonoBehaviour
 		//카메라의 오른쪽 방향
 		Vector3 cameraRight = Camera.main.transform.right;
 
+		Vector3 characterForward = transform.forward;
+		Vector3 characterRight = transform.right;
+
 		//수직 방향(y축) 이동 제거(이동이 평면상에서 이루어지도록 한다.)
 		cameraForward.y = 0f;
 		cameraRight.y = 0f;
@@ -55,7 +58,9 @@ public class P_Movement : MonoBehaviour
 		cameraRight.Normalize();
 
 		//카메라가 보고 있는 방향 기준으로, 입력에 맞는 방향으로 움직이는 벡터를 구한다.
-		Vector3 moveDirection = cameraRight * horizontal + cameraForward * vertical;
+		//Vector3 moveDirection = cameraRight * horizontal + cameraForward * vertical;
+
+		Vector3 moveDirection = characterRight * horizontal + characterForward * vertical;
 
 		//카메라 방향에 따라 캐릭터가 움직이게 된다.
 		controller.Move(moveDirection * moveSpeed * Time.deltaTime);
