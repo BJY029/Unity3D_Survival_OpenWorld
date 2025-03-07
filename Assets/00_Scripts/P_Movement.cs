@@ -17,15 +17,30 @@ public class P_Movement : MonoBehaviour
 
     private CharacterController controller;
 	private Animator animator;
+	private P_Finder Finder;
+	
 
 	private void Start()
 	{
 		controller = GetComponent<CharacterController>();
 		animator = GetComponent<Animator>();
+		Finder = GetComponent<P_Finder>();
 	}
 
 	private void Update()
 	{
+		//현재 상호작용 중이면,
+		if (Finder.OnInteraction)
+		{
+			//아무 키나 눌렸을 때,
+			if (Input.anyKeyDown)
+			{
+				//상호작용을 벗어나는 이벤트를 호출하는 델리게이트를 실행한다.
+				Delegate_Holder.OnOutInteraction();
+			}
+			return;
+		}
+
 		Move();
 		RotateTowardsMouse();
 	}

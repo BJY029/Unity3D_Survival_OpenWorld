@@ -16,6 +16,8 @@ public class UI_Animation_Handler : MonoBehaviour
 		animator.SetTrigger(temp);
 	}
 
+
+	public void Destroy_Object() => Destroy(gameObject);
 	//스크립트가 적용된 오브젝트를 파괴하는 함수(람다)
-	public void Deactive() => Destroy(gameObject);
+	public void Deactive() => gameObject.SetActive(false);
 }
