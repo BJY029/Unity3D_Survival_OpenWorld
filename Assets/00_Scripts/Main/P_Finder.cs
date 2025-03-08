@@ -100,6 +100,8 @@ public class P_Finder : MonoBehaviour
 			//F키가 눌리면
 			if (Input.GetKeyDown(KeyCode.F))
 			{
+				//해당 오브젝트의 M_Object형 스크립트의 Interaction() 함수 호출
+				closetObject.GetComponent<M_Object>().Interaction();
 				//델리게이트를 Invoke 하는 함수 호출
 				Delegate_Holder.OnStartInteraction();
 			}
