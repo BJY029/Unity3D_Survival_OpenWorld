@@ -7,6 +7,8 @@ public class M_Object : MonoBehaviour
 
     public int HP;
 
+    public Item Item_Prefab;
+
     public virtual void Interaction()
     {
         //현재 오브젝트를 P_Handler의 m_Object로 설정
@@ -33,11 +35,16 @@ public class M_Object : MonoBehaviour
             //인자로 해당 오브젝트의 첫번째 자식에 달린 meshRenderer 값을 넘겨준다.
 			Particle_Handler.instance.OnParticle(transform.GetChild(0).GetComponent<MeshRenderer>());
 
+            //fillAmount 값을 1로 초기화하기 위해 BoardHPWhiteFill 의 값을 변경시키는 코루틴을 중지 후
+            //1의 값으로 초기화시킨다.
+			Canvas_Holder.instance.StopAllCoroutines();
+			Canvas_Holder.instance.BoardHpWhiteFill.fillAmount = 1.0f;
+
 			//해당 오브젝트를 파괴한 다음
 			Destroy(this.gameObject);
             //상호작용 종료 델리게이트를 호출한다.
 			Delegate_Holder.OnOutInteraction();
-            
+           
 			return;
         }
 

@@ -14,7 +14,7 @@ public class P_Handler : MonoBehaviour
 	//*****강의에서는 Hit이라고 함수가 정의됨*****
 	public void Attack()
 	{
-		m_Object.HP -= 10;
+		m_Object.HP -= 20;
 
 		//파티클 생성 위치 정의
 		Vector3 pos = new Vector3(

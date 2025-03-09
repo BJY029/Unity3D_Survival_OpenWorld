@@ -28,6 +28,15 @@ public class Interaction_Hit : M_Object
 		//ShakeTree 함수 호출
 		//(인자로 공격 방향을 불러오기 위해서, 오브젝트 위치에서 플레이어 위치를 뺀 방향 벡터 값을 넘긴다.)
 		ShakeTree(transform.position - P_Movement.instance.transform.position);
+
+		if(HP <= 0) //오브젝트의 체력이 0보다 같거나 작으면
+		{
+			//5개의 트레일 프리펩을 생성시킨다.
+			for(int i = 0; i < 5; i++)
+			{
+				Instantiate(Item_Prefab, transform.position, Quaternion.identity);
+			}
+		}
 	}
 
 	private void ShakeTree(Vector3 attackDirection)

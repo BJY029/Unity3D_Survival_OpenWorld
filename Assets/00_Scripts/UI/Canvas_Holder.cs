@@ -8,8 +8,10 @@ public class Canvas_Holder : MonoBehaviour
 
     [SerializeField] private GameObject Board;
 	//체력바의 빨간 부분과 흰색 부분을 가져온다.
-	[SerializeField] private Image BoardHpFill, BoardHpWhiteFill;
+	public Image BoardHpFill, BoardHpWhiteFill;
 	Coroutine F_Courtine;
+
+	public void StopAllCoroutine() => StopAllCoroutines();
 
 	private void Start()
 	{

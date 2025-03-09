@@ -37,6 +37,8 @@ public class P_Finder : MonoBehaviour
 	{
 		//해당 플래그를 true로 만들어서 더 이상 아이콘을 띄우지 않도록 한다.
 		OnInteraction = true;
+		//목표 오브젝트를 바라보도록 설정
+		transform.LookAt(closetObject.transform.position);
 		//현재 가장 가까운 오브젝트 또한 초기화한다.
 		closetObject = null;
 		//현재 띄워진 아이콘을 삭제한다.

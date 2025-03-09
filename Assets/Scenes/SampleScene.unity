@@ -6201,6 +6201,7 @@ MonoBehaviour:
   m_Data: {fileID: 11400000, guid: 4ce2e60ce17bdd74fa1a1ac8aa6e526e, type: 2}
   GetInteraction: 0
   HP: 0
+  Item_Prefab: {fileID: 1516919125777234581, guid: 29688be7cf705e64398ada9448fe668c, type: 3}
 --- !u!1 &1161373362
 GameObject:
   m_ObjectHideFlags: 0
@@ -6535,6 +6536,7 @@ MonoBehaviour:
   m_Data: {fileID: 11400000, guid: 4ce2e60ce17bdd74fa1a1ac8aa6e526e, type: 2}
   GetInteraction: 0
   HP: 0
+  Item_Prefab: {fileID: 1516919125777234581, guid: 29688be7cf705e64398ada9448fe668c, type: 3}
 --- !u!1 &1811288226
 GameObject:
   m_ObjectHideFlags: 0
@@ -7000,7 +7002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86bdd1008afac348a41a08ff1f5e912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitParticle: {fileID: 6646170603779330477, guid: ed84cccd3c66e45418b041356b6b40c4, type: 3}
+  HitParticle: {fileID: 2848453595761928191, guid: ce3de11f1f3617a4bb6127d976d2b753, type: 3}
 --- !u!4 &936440892020812497
 Transform:
   m_ObjectHideFlags: 0
