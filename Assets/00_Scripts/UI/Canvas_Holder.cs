@@ -27,8 +27,6 @@ public class Canvas_Holder : MonoBehaviour
 	public void GetBoard()
     {
         Board.SetActive(true);
-		BoardHpFill.fillAmount = 1.0f;
-		BoardHpWhiteFill.fillAmount = 1.0f;
     }
 
 	//체력 바가 사라지는 애니메이션 수행

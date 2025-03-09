@@ -37,7 +37,11 @@ public class P_Movement : MonoBehaviour
 		animator = GetComponent<Animator>();
 		Finder = GetComponent<P_Finder>();
 
-		Delegate_Holder.OnInteraction += () => animator.SetBool("NoneInteraction", true);
+		Delegate_Holder.OnInteraction += () =>
+		{
+			animator.SetBool("NoneInteraction", true);
+			animator.SetFloat("a_Speed", 0.0f);
+		};
 		Delegate_Holder.OnInteractionOut += () => animator.SetBool("NoneInteraction", false);
 	}
 
@@ -47,7 +51,7 @@ public class P_Movement : MonoBehaviour
 		if (Finder.OnInteraction)
 		{
 			//아무 키나 눌렸을 때,
-			if (Input.anyKeyDown)
+			if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.F))
 			{
 				//상호작용을 벗어나는 이벤트를 호출하는 델리게이트를 실행한다.
 				Delegate_Holder.OnOutInteraction();

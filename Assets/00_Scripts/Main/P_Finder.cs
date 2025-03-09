@@ -47,8 +47,7 @@ public class P_Finder : MonoBehaviour
 	//다시 collider 탐색을 시작하도록 한다.
 	void OnInteractionOut()
 	{
-		//OnInteraction을 1초후에 false로 해서, F키가 연속적으로 눌리는 경우를 방지
-		Invoke("InteractionFalse", 1.0f);
+		OnInteraction = false;
 		activeIcons.Clear();
 	}
 
