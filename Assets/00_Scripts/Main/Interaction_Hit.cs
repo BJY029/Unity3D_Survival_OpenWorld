@@ -31,10 +31,14 @@ public class Interaction_Hit : M_Object
 
 		if(HP <= 0) //오브젝트의 체력이 0보다 같거나 작으면
 		{
-			//5개의 트레일 프리펩을 생성시킨다.
-			for(int i = 0; i < 5; i++)
+			//해당 오브젝트로부터 드롭되는 아이템들을 받아온다.
+			var items = ItemFlowController.DROPITEMLIST(m_Data.Drop_Items);
+
+			//드롭된 아이템만큼의 트레일 프리펩을 생성시킨다.
+			for(int i = 0; i < items.Count; i++)
 			{
 				Instantiate(Item_Prefab, transform.position, Quaternion.identity);
+				Debug.Log(items[i].itemId + " : " + items[i].ItemName + " : " + items[i].Description);
 			}
 		}
 	}
