@@ -37,8 +37,9 @@ public class Interaction_Hit : M_Object
 			//드롭된 아이템만큼의 트레일 프리펩을 생성시킨다.
 			for(int i = 0; i < items.Count; i++)
 			{
-				Instantiate(Item_Prefab, transform.position, Quaternion.identity);
-				Debug.Log(items[i].itemId + " : " + items[i].ItemName + " : " + items[i].Description);
+				var go = Instantiate(Item_Prefab, transform.position, Quaternion.identity);
+				//드롭될 아이템 리스트를 Item 스크립트의 Init 함수로 전달한다.
+				go.Init(items[i]);
 			}
 		}
 	}

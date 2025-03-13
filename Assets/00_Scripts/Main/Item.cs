@@ -11,6 +11,15 @@ public class Item : MonoBehaviour
 	//아이템이 따라갈 플레이어 객체
     Transform Player;
 
+	//아이템의 정보를 담고 있는 스크립터블 오브젝트를 저장할 변수
+	Item_Scriptable m_Data;
+
+	//아이템의 정보를 받는 함수
+	public void Init(Item_Scriptable data)
+	{
+		m_Data = data;
+	}
+
 	private void Start()
 	{
 		Player = P_Movement.instance.transform;
@@ -91,6 +100,9 @@ public class Item : MonoBehaviour
 		}
 		//아이템 획득 시, 파티클 재생
 		Instantiate(GetParticle, transform.position, Quaternion.identity);
+
+		Navigation_Mng.Instance.PanelGet_Item(m_Data);
+
 		Destroy(this.gameObject);
 	}
 }
