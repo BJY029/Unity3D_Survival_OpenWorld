@@ -7,6 +7,7 @@ public class Canvas_Holder : MonoBehaviour
 	public static Canvas_Holder instance = null;
 
     [SerializeField] private GameObject Board;
+	[SerializeField] private GameObject InventoryPanel;
 	//체력바의 빨간 부분과 흰색 부분을 가져온다.
 	public Image BoardHpFill, BoardHpWhiteFill;
 	Coroutine F_Courtine;
@@ -24,6 +25,17 @@ public class Canvas_Holder : MonoBehaviour
 	private void Awake()
 	{
 		if(instance == null) instance = this;
+	}
+
+
+	private void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.Tab))
+		{
+			//해당 오브젝트의 SetActive 값이 true면 false, false면 true로 처리가 된다.
+			//강의에서는 해당 버튼을 'I'로 설정
+			InventoryPanel.SetActive(!InventoryPanel.activeSelf);
+		}
 	}
 
 	public void GetBoard()
