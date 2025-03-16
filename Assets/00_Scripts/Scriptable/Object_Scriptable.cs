@@ -9,6 +9,10 @@ public class ITEMLIST //아이템 리스트의 개별 항목을 저장하는 클래스
     //0~100 범위의 아이템 드롭 확률을 설정하는 값
     [Range(0.0f, 100.0f)]
     public float Value;
+
+    //0~100 범위의 아이템 드롭 갯수를 설정하는 값
+    [Range(0, 100)]
+    public int Maximum;
 }
 
 [CreateAssetMenu(fileName = "Object_Scriptable", menuName = "Scriptable Objects/Object_Scriptable")]

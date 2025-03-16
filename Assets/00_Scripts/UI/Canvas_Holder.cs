@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,34 +8,75 @@ public class Canvas_Holder : MonoBehaviour
 	public static Canvas_Holder instance = null;
 
     [SerializeField] private GameObject Board;
-	[SerializeField] private GameObject InventoryPanel;
+	[SerializeField] private Transform UI_PART_PARENT;
 	//체력바의 빨간 부분과 흰색 부분을 가져온다.
 	public Image BoardHpFill, BoardHpWhiteFill;
 	Coroutine F_Courtine;
 
 	public void StopAllCoroutine() => StopAllCoroutines();
 
-	private void Start()
-	{
-		//OnInteraction 델리게리트(상호작용 시작)에 GetBoard 이벤트 추가
-		Delegate_Holder.OnInteraction += GetBoard;
-		//OnInteractionOut 델리게이트(상호작용 종료)에 BoardOut 이벤트 추가
-		Delegate_Holder.OnInteractionOut += BoardOut;
-	}
+
 
 	private void Awake()
 	{
 		if(instance == null) instance = this;
 	}
 
+	//UI요소들을 저장하는 딕셔너리
+	private Dictionary<string, UIPART> uiPart = new Dictionary<string, UIPART>();
+
+	//해당되는 UI가 존재하면, UIPART의 Open() 함수를 통해 해당 UI 활성화
+	public void OpenUI(string uiName)
+	{
+		if (uiPart.ContainsKey(uiName))
+		{
+			uiPart[uiName].Open();
+		}
+		else Debug.LogWarning($"UI {uiName} not found.");
+	}
+
+	//해당되는 UI가 존재하면, UIPART의 Close() 함수를 통해 해당 UI 비활성화
+	public void CloseUI(string uiName)
+	{
+		if (uiPart.ContainsKey(uiName))
+		{
+			uiPart[uiName].Close();
+		}
+	}
+
+	//모든 UI 비활성화
+	public void CloseAllUI()
+	{
+		foreach (var part in uiPart.Values)
+		{
+			part.Close();
+		}
+	}
+
+	private void Start()
+	{
+		//해당되는 오브젝트 자식들을 배열로 받아온다.(true 설정은 비활성화 된 오브젝트도 찾는 설정)
+		UIPART[] parts = UI_PART_PARENT.GetComponentsInChildren<UIPART>(true);
+		//하나씩 딕셔너리에 삽입한다.
+		foreach(var part in parts)
+		{
+			uiPart.Add(part.name, part);
+		}
+		Debug.Log(uiPart.Keys);
+
+		//OnInteraction 델리게리트(상호작용 시작)에 GetBoard 이벤트 추가
+		Delegate_Holder.OnInteraction += GetBoard;
+		//OnInteractionOut 델리게이트(상호작용 종료)에 BoardOut 이벤트 추가
+		Delegate_Holder.OnInteractionOut += BoardOut;
+	}
 
 	private void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.Tab))
 		{
-			//해당 오브젝트의 SetActive 값이 true면 false, false면 true로 처리가 된다.
 			//강의에서는 해당 버튼을 'I'로 설정
-			InventoryPanel.SetActive(!InventoryPanel.activeSelf);
+			//INVENTORY에 해당되는 uiPart를 켜거나 끈다.
+			uiPart["INVENTORY"].Toggle();
 		}
 	}
 

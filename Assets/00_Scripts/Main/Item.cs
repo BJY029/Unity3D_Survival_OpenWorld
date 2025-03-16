@@ -12,12 +12,14 @@ public class Item : MonoBehaviour
     Transform Player;
 
 	//아이템의 정보를 담고 있는 스크립터블 오브젝트를 저장할 변수
-	Item_Scriptable m_Data;
+	ITEM m_Item;
+	//아이템이 드롭되는 갯수를 저장할 변수
+	int CountValue;
 
 	//아이템의 정보를 받는 함수
-	public void Init(Item_Scriptable data)
+	public void Init(ITEM item)
 	{
-		m_Data = data;
+		m_Item = item;
 	}
 
 	private void Start()
@@ -101,7 +103,10 @@ public class Item : MonoBehaviour
 		//아이템 획득 시, 파티클 재생
 		Instantiate(GetParticle, transform.position, Quaternion.identity);
 
-		Navigation_Mng.Instance.PanelGet_Item(m_Data);
+		Navigation_Mng.Instance.PanelGet_Item(m_Item.Data);
+
+		//인벤토리에 아이템을 삽입하고 갯수 또한 추가한다.
+		ItemFlowController.GETITEM(m_Item.Data, m_Item.Count);
 
 		Destroy(this.gameObject);
 	}
