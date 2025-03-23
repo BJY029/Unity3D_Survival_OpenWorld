@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class INVENTORY : UIPART
 {
@@ -8,23 +10,39 @@ public class INVENTORY : UIPART
     //해당 UI가 생성될 위치
     public Transform Content;
 
+    //총 무게 값의 슬라이더 부분
+    public Image WeightFill;
+    //총 무게 값의 텍스트 부분
+    public TextMeshProUGUI WeightText;
+
     //아이템 UI를 저장할 리스트
     List<Item_Panel> items = new List<Item_Panel>();
+    
+    //아이템 정보들을 저장할 딕셔너리
+    Dictionary<int, ITEM> Inventory_Items = new Dictionary<int, ITEM>();
+
     //최대 아이템 칸을 50개로 설정
     int ItemMaximimValue = 50;
 
+    //아이템 선택을 알려주는 이미지 오브젝트
+    public GameObject ItemClickTap;
+
     //시작과 동시에 초기화
-	private void Start()
+    private void Start()
 	{
 		Init();
+        //델리게이트에 SetItemList 함수와 SetInventory 함수 추가
+        //이로써 아이템을 획득하게 될 때 마다, 해당 함수들이 차례로 실행된다.
+		ItemFlowController.OnItemGet += SetItemList;
+		ItemFlowController.OnItemGet += SetInventory;
 	}
 
-    //아이템이 새로 들어온 후, 해당 변경 사항을 인벤토리 창이 켜졌을 때 최신화 하기 위해
-    //OnEnable()에서도 인벤토리 설정 함수 호출
-	private void OnEnable()
-	{
-		SetInventory();
-	}
+    //델리게이트 설정으로 필요없어짐
+	//private void OnEnable()
+	//{
+	//	SetInventory();
+ //       SetItemList();
+	//}
 
     //아이템 리스트를 초기화 하는 함수
 	public void Init()
@@ -45,17 +63,32 @@ public class INVENTORY : UIPART
             items.Add(go);
         }
 
+        //각 패널에 아이템을 채워넣는다.
+        SetItemList();
 
-        int value = 0;
-        //현재 보유한 아이템 갯수만큼
-        foreach(var item in ItemFlowController.Item_Pairs)
-        {
-            //해당되는 아이템 패널의 Init 함수를 실행시킨다.(Item_Panel의 Init 함수 호출)
-            items[value].Init(item.Value);
-            value++;
-        }
-        //인벤토리 설정
-        SetInventory();
+		//인벤토리 설정
+		SetInventory();
+	}
+
+    public void SetItemList()
+    {
+		int value = 0;
+		//현재 보유한 아이템 갯수만큼
+		foreach (var item in ItemFlowController.Item_Pairs)
+		{
+            //만약 현재 보유한 아이템 딕셔너리에, 해당되는 아이템이 없는 경우
+            //그리고, 해당 아이템의 parentPanel이 아직 null상태인 경우,
+            //즉 아이템이 비어서 Item_Panel의 Init() 함수가 수행되지 않은 경우
+            if (Inventory_Items.ContainsKey(item.Value.Data.itemId) == false
+                && items[value].parentPanel == null)
+            {
+                //해당되는 아이템 패널의 Init 함수를 실행시킨다.(Item_Panel의 Init 함수 호출)
+                items[value].Init(item.Value, this);
+                //그리고 해당 아이템을 딕셔너리에 추가시킨다.
+                Inventory_Items.Add(item.Value.Data.itemId, item.Value);
+            }
+			value++;
+		}
 	}
 
 
@@ -65,7 +98,22 @@ public class INVENTORY : UIPART
         for(int i = 0; i < items.Count; i++)
         {
 			items[i].SetItem();
-
         }
+
+        //현재 무게에서, 플레이어의 기본 무게 값을 나눠서 0~1 사이의 값을 통해 슬라이더 설정
+        WeightFill.fillAmount = ItemFlowController.Weight() / ItemFlowController.Player_Weight;
+        //무게 값을 담당하는 텍스트 또한 해당 값으로 변경시켜준다.
+        WeightText.text = string.Format("{0:0.0}/{1:0.0})", ItemFlowController.Weight(), ItemFlowController.Player_Weight);
     }
+
+    //아이템 선택 이미지를 설정하는 함수
+    public void SetItemClickAnimation(Item_Panel panel)
+	{
+        //해당 이미지 오브젝트를 활성화 시키고,
+        ItemClickTap.gameObject.SetActive(true);
+        //해당 요소를 활성화 된 panel의 자식으로 위치시킨 다음,
+        ItemClickTap.transform.SetParent(panel.transform);
+        //해당 위치에서의 localPosition을 0으로 초기화 시킨다.
+        ItemClickTap.transform.localPosition = Vector2.zero;
+	}
 }

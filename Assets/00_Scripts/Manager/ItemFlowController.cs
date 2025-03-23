@@ -1,11 +1,20 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+//아이템을 얻을때 활성화 되는 델리게이트
+public delegate void OnItemGet();
+
 //Monobehavior 상속 안함(오브젝트에 적용 안됨)
 public class ItemFlowController
 {
+	//델리게이트 선언
+	public static event OnItemGet OnItemGet;
+
+
 	//현재 지니고 있는 아이템 정보들을 관리하는 딕셔너리
 	public static Dictionary<int, ITEM> Item_Pairs = new Dictionary<int, ITEM>();
+	//플레이어의 기본 무게 값 설정
+	public static float Player_Weight = 2500.0f;
 
 	//드롭하는 아이템 리스트를 반환하는 함수(static)
 	public static List<ITEM>DROPITEMLIST(List<ITEMLIST> m_ItemList)
@@ -57,7 +66,10 @@ public class ItemFlowController
 			//얻은 아이템이 현재 아이템에 없는 경우
 			//해당 아이템을 딕셔너리에 새로 추가시킨다.
 			Item_Pairs.Add(ID, item);
+			Debug.Log("new item added : " + item.Data.name);
 		}
+		//해당 델리게이트가 null이 아니라면, 실행시킨다.
+		OnItemGet?.Invoke();
 	}
 
 	//얻은 아이템이 현재 아이템에 있는지 없는지 확인하는 함수
@@ -68,5 +80,33 @@ public class ItemFlowController
 			return true;
 		}
 		return false;
+	}
+
+	//아이템 무게를 설정하는 함수, 해당 아이템의 고유 id를 받아온다.
+	public static float WeightItem(int key)
+	{
+		//해당되는 아이템이 현재 인벤토리에 존재하면
+		if (HaveItem(key))
+		{
+			//해당 아이템의 무게값을 받아와서, 현재 해당 아이템 갯수와 곱한다.
+			ITEM item = Item_Pairs[key];
+			float value = item.Data.Weight * item.Count;
+			//최종 값을 반환한다.
+			return value;
+		}
+		return -1.0f;
+	}
+
+	//전체 무게를 계산하는 함수
+	public static float Weight()
+	{
+		float weight = 0.0f;
+		foreach(var item in Item_Pairs)
+		{
+			//모든 아이템의 무게를 계산해서
+			weight += WeightItem(item.Key);
+		}
+		//전체 무게 값을 반환한다.
+		return weight;
 	}
 }
